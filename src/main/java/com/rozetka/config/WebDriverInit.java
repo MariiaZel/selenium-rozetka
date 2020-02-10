@@ -8,61 +8,46 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.BrowserType;
 
-import java.util.concurrent.TimeUnit;
-
 public class WebDriverInit {
-    private static WebDriverInit instance = new WebDriverInit();
     private PropertyReader propertyReader = new PropertyReader();
-    private static volatile WebDriver driver;
+    private WebDriver driver;
+    protected ThreadLocal<WebDriver> threadLocal = new ThreadLocal<>();
 
-    public static WebDriverInit getInstance() {
-        return instance;
+    public WebDriverInit() {
+        initDriver();
     }
 
+    private void initDriver() {
+        threadLocal.set(getWebDriverInstance(propertyReader.getBaseUrl(), propertyReader.getBrowserType()));
+    }
 
-    private ThreadLocal<WebDriver> threadDriver = new ThreadLocal<WebDriver>() {
-        @Override
-        protected WebDriver initialValue() {
-
-
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
-            driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-            driver.manage().window().maximize();
-            driver.get(propertyReader.getBaseUrl());
-            return driver;
-//            if (driver == null) {
-//                return init(propertyReader.getBaseUrl(), propertyReader.getBrowserType());
-//            }
-//            return driver;
-        }
-    };
-
-    private WebDriver init(String url, String browserType) {
+    private WebDriver getWebDriverInstance(String url, String browserType) {
         switch (browserType) {
             case BrowserType.CHROME:
                 WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
+                this.driver = new ChromeDriver();
                 break;
             case BrowserType.FIREFOX:
                 WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
+                this.driver = new FirefoxDriver();
                 break;
             case BrowserType.HTMLUNIT:
-                driver = new HtmlUnitDriver();
+                this.driver = new HtmlUnitDriver();
                 break;
+            // TODO: Implement custom exception.
+            // default: throw new BrowserNotFoundException();
         }
-        driver.manage().window().maximize();
-        driver.get(url);
-        return driver;
+        this.driver.manage().window().maximize();
+        this.driver.get(url);
+        return this.driver;
     }
 
     public WebDriver getDriver() {
-        return threadDriver.get();
+        return this.threadLocal.get();
     }
 
     public void removeDriver() {
-        threadDriver.get().quit();
-        threadDriver.remove();
+        this.threadLocal.get().quit();
+        this.threadLocal.remove();
     }
 }

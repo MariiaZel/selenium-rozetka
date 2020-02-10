@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class AbstractPage {
 
-    private WebDriver webDriver = WebDriverInit.getInstance().getDriver();
+    private WebDriver webDriver = new WebDriverInit().getDriver();
 
     public WebDriver getWebDriver() {
         return webDriver;

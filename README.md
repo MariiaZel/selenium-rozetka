@@ -1,2 +1,3 @@
-Run command:
-mvn exec:java -Dexec.mainClass=com.rozetka.main.Main -Dexec.args="chrome""# selenium-rozetka" 
+My test project.
+
+Selenium, Java 8, Maven, TesNG.
