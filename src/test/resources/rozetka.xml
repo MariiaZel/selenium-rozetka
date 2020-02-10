@@ -1,9 +1,9 @@
 <?xml version = "1.0" encoding ="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Test Suite" parallel="tests" thread-count="3" >
-    <test name="Test suite" parallel="true">
+<suite name="Test Suite" parallel="classes" >
+    <test name="Test suyite" parallel="methods" thread-count="3">
         <classes>
-            <class name="com.rozetka.Rozoktr"/>
+            <class name="com.rozetka.Rozoktr" />
         </classes>
     </test>
 </suite>
