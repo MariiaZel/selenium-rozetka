@@ -1,5 +1,6 @@
 package com.rozetka.config;
 
+import com.rozetka.utils.BrowserNotFoundException;
 import com.rozetka.utils.PropertyReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -13,15 +14,19 @@ public class WebDriverInit {
     private WebDriver driver;
     protected ThreadLocal<WebDriver> threadLocal = new ThreadLocal<>();
 
-    public WebDriverInit() {
-        initDriver();
+//    public WebDriverInit() {
+//        initDriver();
+//    }
+
+    public void initDriver() {
+        try {
+            threadLocal.set(getWebDriverInstance(propertyReader.getBaseUrl(), propertyReader.getBrowserType()));
+        } catch (BrowserNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void initDriver() {
-        threadLocal.set(getWebDriverInstance(propertyReader.getBaseUrl(), propertyReader.getBrowserType()));
-    }
-
-    private WebDriver getWebDriverInstance(String url, String browserType) {
+    private WebDriver getWebDriverInstance(String url, String browserType) throws BrowserNotFoundException {
         switch (browserType) {
             case BrowserType.CHROME:
                 WebDriverManager.chromedriver().setup();
@@ -34,8 +39,9 @@ public class WebDriverInit {
             case BrowserType.HTMLUNIT:
                 this.driver = new HtmlUnitDriver();
                 break;
-            // TODO: Implement custom exception.
-            // default: throw new BrowserNotFoundException();
+            default:
+                throw new BrowserNotFoundException(String.format("Browser [%s] not found. Please try [%s], [%s] or [%s]",
+                        browserType, BrowserType.CHROME, BrowserType.FIREFOX, BrowserType.HTMLUNIT));
         }
         this.driver.manage().window().maximize();
         this.driver.get(url);

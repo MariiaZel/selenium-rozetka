@@ -1,61 +1,42 @@
 package com.rozetka;
 
-import org.testng.annotations.Test;
+import com.rozetka.pageobjects.HomePO;
+import io.qameta.allure.Step;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
+@Listeners({TestListener.class})
 public class Rozoktr extends BaseTest {
+    HomePO homePO;
+
+    @Step("Login page")
     @Test
     public void testRe() {
-        System.out.println(getDriver().getTitle());
+        homePO = new HomePO();
+        System.out.println(homePO.getTitle());
+//        homePO.clickLogin();
+//        System.out.println(getDriver().getTitle());
     }
 
     @Test
     public void testR1e() {
-        System.out.println(getDriver().getTitle());
+        homePO = new HomePO();
+        System.out.println(homePO.getTitle());
+//        homePO.clickLogin();
+//        System.out.println(getDriver().getTitle());
     }
 
     @Test
     public void test2Re() {
-        System.out.println(getDriver().getTitle());
+        homePO = new HomePO();
+        Assert.assertEquals(homePO.getTitle(), "Google123");
+//        System.out.println(homePO.getTitle());
+//        homePO.clickLogin();
+//        System.out.println(getDriver().getTitle());
     }
 
-//    WebDriver driver;
-//
-//    @Test()
-//    public void testOnChromeWithBrowserStackUrl()
-//    {
-//        WebDriverManager.chromedriver().setup();
-//        driver = new ChromeDriver();
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//        driver.get("https://rozetka.com.ua/");
-//        driver.manage().window().maximize();
-//        System.out.println("this is the test related to chrome browserstack homepage"+ " " +Thread.currentThread().getId());
-//
+//    @AfterMethod
+//    public void removeDriver() {
+//        homePO.getWebDriver().quit();
 //    }
-//
-//    @Test()
-//    public void testOnChromeWithBrowserStackSignUp()
-//    {
-//        WebDriverManager.chromedriver().setup();
-//        driver = new ChromeDriver();
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//        driver.get("https://rozetka.com.ua/");
-//        driver.manage().window().maximize();
-//
-//        System.out.println("this is the test related to chrome browserstack login"+ " " +Thread.currentThread().getId());
-//
-//    }
-//
-//    @Test()
-//    public void testOnChromeWithBrowserStackSignUp1()
-//    {
-//        WebDriverManager.chromedriver().setup();
-//        driver = new ChromeDriver();
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//        driver.get("https://rozetka.com.ua/");
-//        driver.manage().window().maximize();
-//
-//        System.out.println("this is the test related to chrome browserstack login"+ " " +Thread.currentThread().getId());
-//
-//    }
-
 }
