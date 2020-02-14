@@ -10,11 +10,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class AbstractPage {
-
-    private WebDriver webDriver = new WebDriverInit().getDriver();
+    private WebDriverInit webDriverInit = new WebDriverInit();
+    private WebDriver webDriver = initDriver();
 
     public WebDriver getWebDriver() {
         return webDriver;
+    }
+
+    private WebDriver initDriver() {
+        webDriverInit.initDriver();
+        return webDriverInit.getDriver();
     }
 
     public AbstractPage() {
