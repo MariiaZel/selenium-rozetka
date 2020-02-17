@@ -1,18 +1,31 @@
 package com.rozetka.pageobjects;
 
+import com.rozetka.logging.Log;
+import com.rozetka.logging.LogType;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
-public class HomePO extends AbstractPage{
-    private By loginButton = By.xpath("//a[@class='gb_ce gb_4 gb_W']"); //TODO: need change xpath
-    private By basketButton = By.xpath("//span[@class='xhr']");
-    private By wishesButton = By.xpath("//span[@class='underline-hover']");
-    private By comparisonButton = By.xpath("//a[contains(@class, 'comparison-link sprite-side whitelink')]");
+import static com.rozetka.utils.SeleniumHelper.waitForElementClickable;
 
-    public String getTitle() {
-        return getWebDriver().getTitle();
+public class HomePO {
+    private WebDriver driver;
+
+    private By searchField = By.xpath("//input[@name='search']");
+    private By searchButton = By.xpath("//button[contains(@class, 'search-form__submit')]");
+
+    public HomePO(WebDriver driver) {
+        this.driver = driver;
     }
 
-    public void clickLogin() {
-        getWebDriver().findElement(loginButton).click();
+    public void setQueryToSearchField(String query) {
+        waitForElementClickable(driver, searchField);
+        driver.findElement(searchField).sendKeys(query);
+        Log.log(String.format("Set [%s] to search field", query), LogType.INFO);
+    }
+
+    public void clickSearchButton() {
+        waitForElementClickable(driver, searchButton);
+        driver.findElement(searchButton).click();
+        Log.log("Click [Search] button.", LogType.INFO);
     }
 }
