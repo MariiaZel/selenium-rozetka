@@ -1,9 +1,5 @@
-package com.rozetka;
+package com.rozetka.logging;
 
-import com.rozetka.config.WebDriverInit;
-import com.rozetka.logging.Log;
-import com.rozetka.pageobjects.AbstractPage;
-import com.rozetka.pageobjects.HomePO;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -12,7 +8,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-public class TestListener extends BaseTest implements ITestListener {
+public class TestListener implements ITestListener {
 
     private static String getTestMethodName(ITestResult iTestResult) {
         return iTestResult.getMethod().getConstructorOrMethod().getName();
@@ -45,12 +41,6 @@ public class TestListener extends BaseTest implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult arg0) {
-        Object testClass = arg0.getInstance();
-        WebDriver driver = ((BaseTest)testClass).getDriver();
-        if(driver instanceof WebDriver) {
-            System.out.println("Screenshot captured for test case:" + getTestMethodName(arg0));
-            saveScreenshotPNG(driver);
-        }
         System.out.println("FAILED11111 !!!!");
         saveTextLog(getTestMethodName(arg0) + "failed");
     }
