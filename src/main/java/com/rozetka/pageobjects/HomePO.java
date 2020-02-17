@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import static com.rozetka.utils.SeleniumHelper.waitForElementClickable;
+import static com.rozetka.utils.SeleniumHelper.waitForElementVisible;
 
 public class HomePO {
     private WebDriver driver;
@@ -18,7 +19,7 @@ public class HomePO {
     }
 
     public void setQueryToSearchField(String query) {
-        waitForElementClickable(driver, searchField);
+        waitForElementVisible(driver, searchField);
         driver.findElement(searchField).sendKeys(query);
         Log.log(String.format("Set [%s] to search field", query), LogType.INFO);
     }

@@ -11,6 +11,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.BrowserType;
 
+import java.util.concurrent.TimeUnit;
+
 public class DriverFactory {
     private static PropertyReader propertyReader = new PropertyReader();
     private static WebDriver driver;
@@ -33,6 +35,7 @@ public class DriverFactory {
                         propertyReader.getBrowserType(), BrowserType.CHROME, BrowserType.FIREFOX, BrowserType.HTMLUNIT));
         }
         driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.get(propertyReader.getBaseUrl());
         return driver;
     }

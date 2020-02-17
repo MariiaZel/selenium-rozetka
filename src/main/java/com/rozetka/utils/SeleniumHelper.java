@@ -8,12 +8,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class SeleniumHelper {
 
     public static void waitForElementClickable(WebDriver webDriver, By by) {
-        WebDriverWait wait = new WebDriverWait(webDriver, 5);
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
         wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 
     public static void waitForElementVisible(WebDriver webDriver, By by) {
-        WebDriverWait wait = new WebDriverWait(webDriver, 5);
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 }
