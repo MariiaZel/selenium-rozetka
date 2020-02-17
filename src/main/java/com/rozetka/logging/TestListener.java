@@ -1,12 +1,18 @@
 package com.rozetka.logging;
 
 import io.qameta.allure.Attachment;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+
+import static com.rozetka.config.DriverManager.getDriver;
 
 public class TestListener implements ITestListener {
 
@@ -15,17 +21,18 @@ public class TestListener implements ITestListener {
     }
 
     @Attachment(value = "Page screenshot", type = "image/png")
-    public byte[] saveScreenshotPNG(WebDriver driver) {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-    }
-
-    @Attachment(value = "{0}", type = "text/plain")
-    public static String saveTextLog(String message) {
-        return message;
+    public void saveScreenshotPNG(String name, long millisecond) {
+        try {
+            File file = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(file, new File(String.format("%sfailure_screenshots/%s_%s.png", Paths.get("target").toUri().toURL().getPath(), name, millisecond)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onFinish(ITestContext arg0) {
+
         System.out.println("FINISH !!!");
     }
 
@@ -41,13 +48,14 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult arg0) {
-        System.out.println("FAILED11111 !!!!");
-        saveTextLog(getTestMethodName(arg0) + "failed");
+        saveScreenshotPNG(arg0.getName(), arg0.getEndMillis());
+        System.out.println("Screenshot captured for test case:" + getTestMethodName(arg0));
+        System.out.println("FAILED !!!!");
     }
 
     @Override
     public void onTestSkipped(ITestResult arg0) {
-        System.out.println("SCIPPED !!!!");
+        System.out.println("SKIPPED !!!!");
     }
 
     @Override

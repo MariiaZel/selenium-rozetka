@@ -15,7 +15,6 @@ public class DriverManager {
 
     public static void closeDriver() {
         if (threadLocal.get() != null) {
-            threadLocal.get().close();
             threadLocal.get().quit();
             threadLocal.set(null);
         }
